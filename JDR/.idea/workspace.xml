@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6926007b-15ab-4392-9c2f-00ea74121869" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Heros.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/Carte.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Carte.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Heros.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Carte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Carte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Heros.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Deplacement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

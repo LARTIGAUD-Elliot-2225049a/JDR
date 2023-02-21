@@ -1,8 +1,8 @@
-public class Heros {
+public class Deplacement {
     private int x;
     private int y;
 
-    public Heros(int x, int y) {
+    public Deplacement(int x, int y) {
         this.x = x;
         this.y = y;
     }
