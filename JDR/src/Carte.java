@@ -76,14 +76,6 @@ public class Carte {
         }
     }
 
-    public int getHauteur() {
-        return carte.length;
-    }
-
-    public int getLargeur() {
-        return carte[0].length;
-    }
-
     public char getCase(int x, int y) {
         return carte[x][y];
     }
