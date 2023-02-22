@@ -36,6 +36,8 @@ public class Main {
                 "################################";
         Carte carte = new Carte(carteStr);
         Scanner scanner = new Scanner(System.in);
+        Inventaire inventaire = new Inventaire();
+        boolean afficherCarte = true;
 
         int[] heroPos = carte.getHeros();
         if (heroPos[0] == -1 && heroPos[1] == -1) {
@@ -43,9 +45,12 @@ public class Main {
         }
         Deplacement heros = new Deplacement(heroPos[0], heroPos[1]);
         while (true) {
-            carte.afficherCarte();
-            System.out.print("Entrez une commande (haut/bas/gauche/droite) : ");
+            if (afficherCarte) {
+                carte.afficherCarte();
+            }
+            System.out.print("Entrez une commande ('help' pour les commande) : ");
             String commande = scanner.nextLine();
+
 
             int deplacementX = 0;
             int deplacementY = 0;
@@ -63,6 +68,15 @@ public class Main {
                 case "droite":
                     deplacementY = 1;
                     break;
+                case "inventaire":
+                    inventaire.afficherInventaire();
+                    afficherCarte = false;
+                    break;
+                case "fermer inventaire":
+                    break;
+                case "help":
+                    System.out.print("Mouvement : haut,bas,droite,gauche \nInventaire : inventaire,fermer inventaire \n");
+                    break;
                 default:
                     System.out.println("\u001B[31m" + "Commande invalide" + "\u001B[0m");
                     continue;
@@ -79,6 +93,12 @@ public class Main {
             int[] nouvellePosition = heros.getPosition();
             carte.setCase(anciennePosition[0], anciennePosition[1], '.');
             carte.setCase(nouvellePosition[0], nouvellePosition[1], 'H');
+
+            if (!commande.equals("inventaire")) {
+                afficherCarte = true;
+            }
+
         }
+
     }
 }

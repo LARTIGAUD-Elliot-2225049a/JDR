@@ -49,18 +49,6 @@ public class Hero {
             System.out.println("Defense : " + defense);
             System.out.println("Vitesse : " + vitesse);
         }
-        public void ajusterStats(Inventaire Inventaire) {
-            for (Arme arme : Inventaire.getArmes()) {
-                attaque += arme.getAttaque();
-                defense += arme.getDefense();
-                vitesse += arme.getVitesse();
-            }
-            for (Artefact artefact : Inventaire.getArtefacts()) {
-                attaque += artefact.getAttaque();
-                defense += artefact.getDefense();
-                vitesse += artefact.getVitesse();
-            }
-        }
 
     }
 }

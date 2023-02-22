@@ -11,11 +11,11 @@ public class Inventaire {
         potions = new ArrayList<Potion>();
     }
 
-    public ArrayList<Arme> getArmes() {
+    public ArrayList<Arme> getArme() {
         return armes;
     }
 
-    public ArrayList<Artefact> getArtefacts() {
+    public ArrayList<Artefact> getArtefact() {
         return artefacts;
     }
 
