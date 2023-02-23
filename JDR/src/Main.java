@@ -39,6 +39,7 @@ public class Main {
         Inventaire inventaire = new Inventaire();
         boolean afficherCarte = true;
 
+
         int[] heroPos = carte.getHeros();
         if (heroPos[0] == -1 && heroPos[1] == -1) {
             System.out.println("\u001B[31m" + "Le héros n'est pas sur la carte." + "\u001B[0m");
@@ -77,6 +78,7 @@ public class Main {
                 case "help":
                     System.out.print("Mouvement : haut,bas,droite,gauche \nInventaire : inventaire,fermer inventaire \n");
                     break;
+
                 default:
                     System.out.println("\u001B[31m" + "Commande invalide" + "\u001B[0m");
                     continue;
