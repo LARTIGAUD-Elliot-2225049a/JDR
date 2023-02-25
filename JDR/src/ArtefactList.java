@@ -14,7 +14,7 @@ public class ArtefactList {
         artefacts.add(new Artefact("Amulette du chaos", 20, -5, 10, Rarete.RARE));
         artefacts.add(new Artefact("Bâton de l'ombre", 10, 5, -5, Rarete.EPIC));
         artefacts.add(new Artefact("Bouclier de la lumière", 0, 0, 30, Rarete.EPIC));
-        artefacts.add(new Artefact("/gamemode 0 ", 100,  100, 100, Rarete.LEGENDARY));
+        artefacts.add(new Artefact("gamemode 0 ", 100,  100, 100, Rarete.LEGENDARY));
     }
 
     public Artefact getArtefact(int index) {

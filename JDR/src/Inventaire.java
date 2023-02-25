@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Inventaire {
     private ArrayList<Arme> armes;
@@ -49,6 +50,23 @@ public class Inventaire {
             System.out.println("L'inventaire de potions est plein !");
         }
     }
+    public void ajouterArmeText(Arme arme) {
+        if (armes.size() < 2) {
+            armes.add(arme);
+        }
+    }
+
+    public void ajouterArtefactText(Artefact artefact) {
+        if (artefacts.size() < 3) {
+            artefacts.add(artefact);
+        }
+    }
+
+    public void ajouterPotionText(Potion potion) {
+        if (potions.size() < 5) {
+            potions.add(potion);
+        }
+    }
 
     public void enleverArme(Arme arme) {
         if (armes.contains(arme)) {
@@ -80,29 +98,56 @@ public class Inventaire {
 
     // Méthode pour afficher le contenu de l'inventaire
     public void afficherInventaire() {
+        int n =1;
         System.out.println("Armes :");
         if (armes.size() == 0) {
             System.out.println("Aucune arme");
         } else {
-            for (Arme arme : armes) {
-                System.out.println(arme.getNom() + " - Attaque : " + arme.getAttaque() + " - Défense : " + arme.getDefense() + " - Vitesse : " + arme.getVitesse() + " - Rareté : " + arme.getRarete() );
+            for (int i = 0; i < armes.size(); i++) {
+                Arme arme = armes.get(i);
+                System.out.println( n + ". " + arme.getNom() + " - Attaque : " + arme.getAttaque() + " - Défense : " + arme.getDefense() + " - Vitesse : " + arme.getVitesse() + " - Rareté : " + arme.getRarete());
+                n += 1;
             }
         }
         System.out.println("Artefacts :");
         if (artefacts.size() == 0) {
             System.out.println("Aucun artefact");
         } else {
-            for (Artefact artefact : artefacts) {
-                System.out.println(artefact.getNom() + " - Attaque : " + artefact.getAttaque() + " - Défense : " + artefact.getDefense() + " - Vitesse : " + artefact.getVitesse() + " - Rareté : " + artefact.getRarete() );
+            for (int i = 0; i < artefacts.size(); i++) {
+                Artefact artefact = artefacts.get(i);
+                System.out.println( n + ". " + artefact.getNom() + " - Attaque : " + artefact.getAttaque() + " - Défense : " + artefact.getDefense() + " - Vitesse : " + artefact.getVitesse() + " - Rareté : " + artefact.getRarete());
+                n += 1;
             }
         }
         System.out.println("Potions :");
         if (potions.size() == 0) {
             System.out.println("Aucune potion");
         } else {
-            for (Potion potion : potions) {
-                System.out.println(potion.getNom() + " - Attaque : " + potion.getAttaque() + " - Défense : " + potion.getDefense() + " - Vitesse : " + potion.getVitesse() + " - Vie : " + potion.getVie() + " - Rareté : " + potion.getRarete() );
+            for (int i = 0; i < potions.size(); i++) {
+                Potion potion = potions.get(i);
+                System.out.println( n + ". " + potion.getNom() + " - Attaque : " + potion.getAttaque() + " - Défense : " + potion.getDefense() + " - Vitesse : " + potion.getVitesse() + " - Vie : " + potion.getVie() + " - Rareté : " + potion.getRarete());
+                n += 1;
+            }
+        }
+
+        // Demander au joueur s'il veut jeter un objet
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Entrez le numéro de l'objet à jeter ou 0 pour fermer l'inventaire:");
+        int choix = scanner.nextInt();
+        if (choix > 0) {
+            System.out.println("Confirmer la suppression de l'objet sélectionné (y/n) :");
+            String confirmation = scanner.next();
+
+            if (confirmation.equalsIgnoreCase("y")) {
+                if (choix <= armes.size()) {
+                    enleverArme(armes.get(choix - 1));
+                } else if (choix <= armes.size() + artefacts.size()) {
+                    enleverArtefact(artefacts.get(choix - armes.size() - 1));
+                } else {
+                    enleverPotion(potions.get(choix - armes.size() - artefacts.size() - 1));
+                }
             }
         }
     }
 }
+

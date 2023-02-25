@@ -1,4 +1,3 @@
-import javax.swing.event.DocumentEvent;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -34,9 +33,9 @@ public class Main {
             }
             System.out.println();
         }
-        inventaire.ajouterArme(armesList.getArme(0));
-        inventaire.ajouterPotion(PotionList.getPotion(0));
-        inventaire.ajouterArtefact(artefactsList.getArtefact(0));
+        inventaire.ajouterArmeText(armesList.getArme(0));
+        inventaire.ajouterPotionText(PotionList.getPotion(0));
+        inventaire.ajouterArtefactText(artefactsList.getArtefact(0));
         // Boucle pour déplacer le héros
         while (true) {
                 // Lecture de la commande entrée

@@ -5,27 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6926007b-15ab-4392-9c2f-00ea74121869" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Combat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/ArmesList$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/ArmesList$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/ArmesList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/ArmesList.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/ArtefactList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/ArtefactList.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/Carte.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Carte.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/EchangeInventaire.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/EchangeInventaire.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/Inventaire.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Inventaire.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/InventaireCoffre.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/InventaireCoffre.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/PotionList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/PotionList.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ArmesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ArmesList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ArtefactList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ArtefactList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Carte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Carte.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EchangeInventaire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EchangeInventaire.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Hero.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Hero.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Inventaire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Inventaire.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InventaireCoffre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InventaireCoffre.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Monstre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Monstre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PotionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PotionList.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
