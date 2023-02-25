@@ -5,9 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6926007b-15ab-4392-9c2f-00ea74121869" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Coffre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/EchangeInventaire.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/InventaireCoffre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Monstre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vieux/Carte1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vieux/Deplacement1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vieux/Main1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/ArmesList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/ArmesList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Carte.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Carte.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Coffre.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Deplacement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Deplacement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Inventaire.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Inventaire.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ArmesList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ArmesList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Carte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Carte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Coffre.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Deplacement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Deplacement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Inventaire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Inventaire.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,15 +48,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "jdk.selected.JAVA_MODULE": "openjdk-19",
-    "settings.editor.selected.configurable": "preferences.sourceCode"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-19&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="vieux" />
+      <recent name="Arme" />
+      <recent name="Artefacts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="JDR" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -63,5 +99,18 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/JDR$Main.ic" NAME="Main Coverage Results" MODIFIED="1677201271749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>

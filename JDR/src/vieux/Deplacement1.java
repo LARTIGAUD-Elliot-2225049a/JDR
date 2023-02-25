@@ -1,8 +1,10 @@
-public class Deplacement {
+package vieux;
+/*
+public class Deplacement1 {
     private int x;
     private int y;
 
-    public Deplacement(int x, int y) {
+    public Deplacement1(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -21,8 +23,7 @@ public class Deplacement {
         position[1] = this.y;
         return position;
     }
-}
-/*
+
     public void seDeplacer(int deplacementX, int deplacementY, Carte carte) {
         int nouvellePositionX = x + deplacementX;
         int nouvellePositionY = y + deplacementY;

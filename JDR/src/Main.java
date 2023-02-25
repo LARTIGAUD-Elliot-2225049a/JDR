@@ -1,106 +1,109 @@
+import javax.swing.event.DocumentEvent;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        String carteStr = "################################\n" +
-                "######################.........#\n" +
-                "######################.........#\n" +
-                "######################.........#\n" +
-                "######################.........#\n" +
-                "######################.........#\n" +
-                "##############.....###.........#\n" +
-                "##############.....###.........#\n" +
-                "##############.....##########.##\n" +
-                "##############.....##########.##\n" +
-                "################.############.##\n" +
-                "################.############.##\n" +
-                "#...##########...############.##\n" +
-                "#.....########..........#####.##\n" +
-                "#.......######..####..........##\n" +
-                "#...............####....#####.##\n" +
-                "#..............#..##....#####.##\n" +
-                "#.............##........#####.##\n" +
-                "#.....####....##..##....#####.##\n" +
-                "#....######..###..##....#####.##\n" +
-                "#....#######.################.##\n" +
-                "#.....######.###########..###.##\n" +
-                "#.....######.#########....###.##\n" +
-                "##....######.#########.#..##...#\n" +
-                "##....######..########.#####...#\n" +
-                "##.....#####...######...####...#\n" +
-                "##.............######..........#\n" +
-                "##........###...#####...###....#\n" +
-                "##........#####.........###....#\n" +
-                "##........##########....###....#\n" +
-                "####################....###....#\n" +
-                "################################";
-        Carte carte = new Carte(carteStr);
+        Carte carte = new Carte();
+        char[][] map = carte.getCarte();
+        Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
+        InventaireCoffre inventaireCoffre = new InventaireCoffre();
+        ArmesList armesList = new ArmesList();
+        EchangeInventaire echangeInventaire = new EchangeInventaire();
         Inventaire inventaire = new Inventaire();
-        boolean afficherCarte = true;
+        int sortieCoffre =0;
 
-
-        int[] heroPos = carte.getHeros();
-        if (heroPos[0] == -1 && heroPos[1] == -1) {
-            System.out.println("\u001B[31m" + "Le héros n'est pas sur la carte." + "\u001B[0m");
+        // Placement du héros
+        int x = rand.nextInt(carte.NB_LIGNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_LIGNES-2 (pour éviter le contour)
+        int y = rand.nextInt(carte.NB_COLONNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_COLONNES-2 (pour éviter le contour)
+        while (map[x][y] != '.') { // Si la case est déjà occupée, on en génère de nouvelles
+            x = rand.nextInt(carte.NB_LIGNES - 2) + 1;
+            y = rand.nextInt(carte.NB_COLONNES - 2) + 1;
         }
-        Deplacement heros = new Deplacement(heroPos[0], heroPos[1]);
-        while (true) {
-            if (afficherCarte) {
-                carte.afficherCarte();
+        map[x][y] = 'H';
+
+        // Affichage de la carte
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                System.out.print(map[i][j]);
             }
-            System.out.print("Entrez une commande ('help' pour les commande) : ");
+            System.out.println();
+        }
+
+        inventaire.ajouterArme(armesList.choisirArme());
+
+        // Boucle pour déplacer le héros
+        while (true) {
+            // Lecture de la commande entrée
+            System.out.print("Entrez une commande (haut/bas/gauche/droite) : ");
             String commande = scanner.nextLine();
 
-
-            int deplacementX = 0;
-            int deplacementY = 0;
-
+            // Déplacement du héros
+            int nouveauX = x;
+            int nouveauY = y;
             switch (commande) {
-                case "haut":
-                    deplacementX = -1;
+                case "z":
+                    nouveauX--;
                     break;
-                case "bas":
-                    deplacementX = 1;
+                case "s":
+                    nouveauX++;
                     break;
-                case "gauche":
-                    deplacementY = -1;
+                case "q":
+                    nouveauY--;
                     break;
-                case "droite":
-                    deplacementY = 1;
+                case "d":
+                    nouveauY++;
                     break;
+
+                case "ouvrir coffre":
+                    if ((x > 0 && map[x - 1][y] == 'C') || (x < carte.NB_LIGNES - 1 && map[x + 1][y] == 'C')
+                            || (y > 0 && map[x][y - 1] == 'C') || (y < carte.NB_COLONNES - 1 && map[x][y + 1] == 'C')) {
+                        System.out.println("Coffre ouvert");
+                        inventaireCoffre.ajouterArmeCoffreText(armesList.choisirArme());
+                        inventaireCoffre.afficherInventaireCoffre();
+                        EchangeInventaire.echangeInventaire(inventaire,inventaireCoffre);
+                        inventaireCoffre.viderInventaireCoffre();
+                    }
+
+                    else {
+                        System.out.println("Pas de coffre");
+                        continue;
+                    }
                 case "inventaire":
                     inventaire.afficherInventaire();
-                    afficherCarte = false;
                     break;
-                case "fermer inventaire":
-                    break;
-                case "help":
-                    System.out.print("Mouvement : haut,bas,droite,gauche \nInventaire : inventaire,fermer inventaire \n");
-                    break;
-
                 default:
-                    System.out.println("\u001B[31m" + "Commande invalide" + "\u001B[0m");
-                    continue;
-            }
-            int nouvellePositionX = heroPos[0] + deplacementX;
-            int nouvellePositionY = heroPos[1] + deplacementY;
-            if (carte.getCase(nouvellePositionX, nouvellePositionY) == '#') {
-                System.out.println("\u001B[31m" + "Vous ne pouvez pas passer à travers les murs !" + "\u001B[0m");
-                continue;
-            }
+                    System.out.println("Commande invalide.");
+                    continue; // On passe au tour suivant de la boucle
 
-            int[] anciennePosition = heros.getPosition();
-            heros.seDeplacer(deplacementX, deplacementY, carte);
-            int[] nouvellePosition = heros.getPosition();
-            carte.setCase(anciennePosition[0], anciennePosition[1], '.');
-            carte.setCase(nouvellePosition[0], nouvellePosition[1], 'H');
-
-            if (!commande.equals("inventaire")) {
-                afficherCarte = true;
+            }
+                if (((map[nouveauX][nouveauY] == 'C')
+                    ||(map[nouveauX][nouveauY] == 'M')
+                        ||(map[nouveauX][nouveauY] == '#'))){
+                System.out.println("Déplacement impossible : case occupée.");
+                continue; // On passe au tour suivant de la boucle
             }
 
+            // Vérification de la validité du déplacement
+            if (nouveauX < 0 || nouveauX >= carte.NB_LIGNES || nouveauY < 0 || nouveauY >= carte.NB_COLONNES) {
+                System.out.println("Déplacement impossible : hors de la carte.");
+                continue; // On passe au tour suivant de la boucle
+            }
+
+            // Déplacement effectif du héros
+            map[x][y] = '.';
+            x = nouveauX;
+            y = nouveauY;
+            map[x][y] = 'H';
+
+            // Affichage de la carte mise à jour
+            for (int i = 0; i < map.length; i++) {
+                for (int j = 0; j < map[i].length; j++) {
+                    System.out.print(map[i][j]);
+                }
+                System.out.println();
+            }
         }
-
     }
-}
+    }

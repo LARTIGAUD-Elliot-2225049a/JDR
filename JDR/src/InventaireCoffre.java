@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
-public class Inventaire {
-    private ArrayList<Arme> armes;
+public class InventaireCoffre {
+    private static ArrayList<Arme> armes;
     private ArrayList<Artefact> artefacts;
     private ArrayList<Potion> potions;
 
-    public Inventaire() {
+    public InventaireCoffre() {
         armes = new ArrayList<Arme>();
         artefacts = new ArrayList<Artefact>();
         potions = new ArrayList<Potion>();
@@ -23,62 +23,89 @@ public class Inventaire {
         return potions;
     }
 
-    public void ajouterArme(Arme arme) {
-        if (armes.size() < 2) {
+    public void ajouterArmeCoffre(Arme arme) {
+        if (armes.size() < 3) {
             armes.add(arme);
-            System.out.println("L'arme " + arme.getNom() + " a été ajoutée à l'inventaire !");
+            System.out.println("L'arme " + arme.getNom() + " a été ajoutée au coffre !");
         } else {
-            System.out.println("L'inventaire d'armes est plein !");
+            System.out.println("Le coffre et plein !");
         }
     }
 
-    public void ajouterArtefact(Artefact artefact) {
+    public void ajouterArtefactCoffre(Artefact artefact) {
         if (artefacts.size() < 3) {
             artefacts.add(artefact);
-            System.out.println("L'artefact " + artefact.getNom() + " a été ajouté à l'inventaire !");
+            System.out.println("L'artefact " + artefact.getNom() + " a été ajouté au coffre !");
         } else {
-            System.out.println("L'inventaire d'artefacts est plein !");
+            System.out.println("Le coffre et plein  !");
         }
     }
 
-    public void ajouterPotion(Potion potion) {
-        if (potions.size() < 5) {
+    public void ajouterPotionCoffre(Potion potion) {
+        if (potions.size() < 3) {
             potions.add(potion);
-            System.out.println(potion.getNom() + " a été ajoutée à l'inventaire !");
+            System.out.println(potion.getNom() + " a été ajoutée au coffre !");
         } else {
-            System.out.println("L'inventaire de potions est plein !");
+            System.out.println("LLe coffre et plein  !");
+        }
+    }
+    public void ajouterArmeCoffreText(Arme arme) {
+        if (armes.size() < 1) {
+            armes.add(arme);
+        } else {
+            System.out.println("Le coffre et plein !");
         }
     }
 
-    public void enleverArme(Arme arme) {
+    public void ajouterArtefactCoffreText(Artefact artefact) {
+        if (artefacts.size() < 1) {
+            artefacts.add(artefact);
+        } else {
+            System.out.println("Le coffre et plein  !");
+        }
+    }
+
+    public void ajouterPotionCoffreText(Potion potion) {
+        if (potions.size() < 1) {
+            potions.add(potion);
+        } else {
+            System.out.println("LLe coffre et plein  !");
+        }
+    }
+    public void enleverArmeCoffre(Arme arme) {
         if (armes.contains(arme)) {
             armes.remove(arme);
-            System.out.println("L'arme " + arme.getNom() + " a été enlevée de l'inventaire !");
+            System.out.println("L'arme " + arme.getNom() + " a été enlevée du coffre !");
         } else {
-            System.out.println("L'arme " + arme.getNom() + " n'est pas dans l'inventaire !");
+            System.out.println("L'arme " + arme.getNom() + " n'est pas dans le coffre !");
         }
     }
 
-    public void enleverArtefact(Artefact artefact) {
+    public void enleverArtefactCoffre(Artefact artefact) {
         if (artefacts.contains(artefact)) {
             artefacts.remove(artefact);
-            System.out.println("L'artefact " + artefact.getNom() + " a été enlevé de l'inventaire !");
+            System.out.println("L'artefact " + artefact.getNom() + " a été enlevé ddu coffre !");
         } else {
-            System.out.println("L'artefact " + artefact.getNom() + " n'est pas dans l'inventaire !");
+            System.out.println("L'artefact " + artefact.getNom() + " n'est pas dans le coffre!");
         }
     }
 
-    public void enleverPotion(Potion potion) {
+    public void enleverPotionCoffre(Potion potion) {
         if (potions.contains(potion)) {
             potions.remove(potion);
-            System.out.println(potion.getNom() + " a été enlevée de l'inventaire !");
+            System.out.println(potion.getNom() + " a été enlevée du coffre !");
         } else {
-            System.out.println(potion.getNom() + " n'est pas dans l'inventaire !");
+            System.out.println(potion.getNom() + " n'est pas dans le coffre !");
         }
+    }
+    public void viderInventaireCoffre() {
+        armes.clear();
+        artefacts.clear();
+        potions.clear();
     }
 
     // Méthode pour afficher le contenu de l'inventaire
-    public void afficherInventaire() {
+    public void afficherInventaireCoffre() {
         System.out.println("Armes :");
         if (armes.size() == 0) {
             System.out.println("Aucune arme");
@@ -105,3 +132,5 @@ public class Inventaire {
         }
     }
 }
+
+
