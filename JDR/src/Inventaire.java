@@ -77,6 +77,7 @@ public class Inventaire {
         }
     }
 
+
     // Méthode pour afficher le contenu de l'inventaire
     public void afficherInventaire() {
         System.out.println("Armes :");

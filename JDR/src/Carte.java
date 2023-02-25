@@ -82,5 +82,6 @@ public class Carte {
     public char[][] getCarte() {
         return carte;
     }
+
 }
 

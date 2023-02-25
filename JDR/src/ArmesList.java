@@ -18,10 +18,6 @@ public class ArmesList {
         armes.add(new Arme("Mjöllnir", 30, 10, 5, Rarete.LEGENDARY));
     }
 
-    public List<Arme> getArmes() {
-        return armes;
-    }
-
     public Arme getArme(int index) {
         if (index >= 0 && index < armes.size()) {
             return armes.get(index);

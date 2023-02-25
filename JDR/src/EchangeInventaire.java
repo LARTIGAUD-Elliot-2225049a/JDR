@@ -4,13 +4,12 @@ public class EchangeInventaire {
     public static void echangeInventaire(Inventaire inventaire1, InventaireCoffre inventaireCoffre) {
         Scanner scanner = new Scanner(System.in);
         boolean continuer = true;
-        int fin=0;
 
         while (continuer) {
             System.out.println("Que souhaitez-vous faire ?");
             System.out.println("1. Ajouter un objet de l'inventaire au coffre");
             System.out.println("2. Retirer un objet du coffre pour l'ajouter à l'inventaire");
-            System.out.println("3. Quitter");
+            System.out.println("3. Fermer le Coffre");
             System.out.print("Entrez une commande : ");
             int choix = scanner.nextInt();
             switch (choix) {
@@ -19,6 +18,7 @@ public class EchangeInventaire {
                     System.out.println("1. Arme");
                     System.out.println("2. Artefact");
                     System.out.println("3. Potion");
+                    System.out.println("4. Retour");
                     System.out.print("Entrez une commande : ");
                     int choixType = scanner.nextInt();
                     switch (choixType) {
@@ -39,7 +39,7 @@ public class EchangeInventaire {
                                     inventaire1.enleverArme(armes.get(choixArme - 1));
                                 }
                             }
-                            break;
+                            continue;
                         case 2:
                             ArrayList<Artefact> artefacts = inventaire1.getArtefact();
                             if (artefacts.size() == 0) {
@@ -47,7 +47,7 @@ public class EchangeInventaire {
                             } else {
                                 System.out.println("Quel artefact voulez-vous ajouter au coffre ?");
                                 for (int i = 0; i < artefacts.size(); i++) {
-                                    System.out.println((i + 1) + ". " + artefacts.get(i).getNom());
+                                    System.out.println((i + 1) + ". " + artefacts.get(i).getNom() + " - Attaque : " + artefacts.get(i).getAttaque() + " - Défense : " + artefacts.get(i).getDefense() + " - Vitesse : " + artefacts.get(i).getVitesse() + " - Rareté : " + artefacts.get(i).getRarete() );
                                 }
                                 int choixArtefact = scanner.nextInt();
                                 if (choixArtefact < 1 || choixArtefact > artefacts.size()) {
@@ -57,7 +57,7 @@ public class EchangeInventaire {
                                     inventaire1.enleverArtefact(artefacts.get(choixArtefact - 1));
                                 }
                             }
-                            break;
+                            continue;
                         case 3:
                             ArrayList<Potion> potions = inventaire1.getPotions();
                             if (potions.size() == 0) {
@@ -65,7 +65,7 @@ public class EchangeInventaire {
                             } else {
                                 System.out.println("Quelle potion voulez-vous ajouter au coffre ?");
                                 for (int i = 0; i < potions.size(); i++) {
-                                    System.out.println((i + 1) + ". " + potions.get(i).getNom());
+                                    System.out.println((i + 1) + ". " + potions.get(i).getNom() + " - Attaque : " + potions.get(i).getAttaque() + " - Défense : " + potions.get(i).getDefense() + " - Vitesse : " + potions.get(i).getVitesse() + " - Rareté : " + potions.get(i).getRarete() );
                                 }
                                 int choixPotion = scanner.nextInt();
                                 if (choixPotion < 1 || choixPotion > potions.size()) {
@@ -75,7 +75,9 @@ public class EchangeInventaire {
                                     inventaire1.enleverPotion(potions.get(choixPotion - 1));
                                 }
                             }
-                            break;
+                            continue;
+                        case 4 :
+                            continue;
                         default:
                             System.out.println("Choix invalide !");
                             break;
@@ -86,6 +88,7 @@ public class EchangeInventaire {
                     System.out.println("1. Arme");
                     System.out.println("2. Artefact");
                     System.out.println("3. Potion");
+                    System.out.println("4. Retour");
                     System.out.print("Entrez une commande : ");
                     int choixTypeRetrait = scanner.nextInt();
                     switch (choixTypeRetrait) {
@@ -106,7 +109,7 @@ public class EchangeInventaire {
                                     inventaireCoffre.enleverArmeCoffre(armes.get(choixArme - 1));
                                 }
                             }
-                            break;
+                            continue;
                         case 2:
                             ArrayList<Artefact> artefacts = inventaireCoffre.getArtefact();
                             if (artefacts.size() == 0) {
@@ -114,7 +117,7 @@ public class EchangeInventaire {
                             } else {
                                 System.out.println("Quel artefact voulez-vous retirer du coffre ?");
                                 for (int i = 0; i < artefacts.size(); i++) {
-                                    System.out.println((i + 1) + ". " + artefacts.get(i).getNom());
+                                    System.out.println((i + 1) + ". " + artefacts.get(i).getNom() + " - Attaque : " + artefacts.get(i).getAttaque() + " - Défense : " + artefacts.get(i).getDefense() + " - Vitesse : " + artefacts.get(i).getVitesse() + " - Rareté : " + artefacts.get(i).getRarete() );
                                 }
                                 int choixArtefact = scanner.nextInt();
                                 if (choixArtefact < 1 || choixArtefact > artefacts.size()) {
@@ -124,7 +127,7 @@ public class EchangeInventaire {
                                     inventaireCoffre.enleverArtefactCoffre(artefacts.get(choixArtefact - 1));
                                 }
                             }
-                            break;
+                            continue;
                         case 3:
                             ArrayList<Potion> potions = inventaireCoffre.getPotions();
                             if (potions.size() == 0) {
@@ -132,7 +135,7 @@ public class EchangeInventaire {
                             } else {
                                 System.out.println("Quelle potion voulez-vous retirer du coffre ?");
                                 for (int i = 0; i < potions.size(); i++) {
-                                    System.out.println((i+1) + ". " + potions.get(i).getNom());
+                                    System.out.println((i+1) + ". " + potions.get(i).getNom() + " - Attaque : " + potions.get(i).getAttaque() + " - Défense : " + potions.get(i).getDefense() + " - Vitesse : " + potions.get(i).getVitesse() + " - Rareté : " + potions.get(i).getRarete() );
                                 }
                                 int choixPotion = scanner.nextInt();
                                 if (choixPotion < 1 || choixPotion > potions.size()) {
@@ -142,7 +145,9 @@ public class EchangeInventaire {
                                     inventaireCoffre.enleverPotionCoffre(potions.get(choixPotion-1));
                                 }
                             }
-                            break;
+                            continue;
+                        case 4:
+                            continue;
                         default:
                             System.out.println("Choix invalide !");
                             break;
@@ -151,7 +156,6 @@ public class EchangeInventaire {
                     continuer = false;
                     break;
                 default:
-                    if (fin==0);
                     System.out.println("Choix invalide !");
                     break;
             }

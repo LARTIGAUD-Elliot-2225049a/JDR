@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Hero {
     private int vie;
     private int attaque;
@@ -49,6 +51,5 @@ public class Hero {
             System.out.println("Defense : " + defense);
             System.out.println("Vitesse : " + vitesse);
         }
-
     }
 }

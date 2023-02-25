@@ -106,7 +106,6 @@ public class InventaireCoffre {
 
     // Méthode pour afficher le contenu de l'inventaire
     public void afficherInventaireCoffre() {
-        System.out.println("Armes :");
         if (armes.size() == 0) {
             System.out.println("Aucune arme");
         } else {
@@ -114,7 +113,6 @@ public class InventaireCoffre {
                 System.out.println(arme.getNom() + " - Attaque : " + arme.getAttaque() + " - Défense : " + arme.getDefense() + " - Vitesse : " + arme.getVitesse() + " - Rareté : " + arme.getRarete() );
             }
         }
-        System.out.println("Artefacts :");
         if (artefacts.size() == 0) {
             System.out.println("Aucun artefact");
         } else {
@@ -122,7 +120,6 @@ public class InventaireCoffre {
                 System.out.println(artefact.getNom() + " - Attaque : " + artefact.getAttaque() + " - Défense : " + artefact.getDefense() + " - Vitesse : " + artefact.getVitesse() + " - Rareté : " + artefact.getRarete() );
             }
         }
-        System.out.println("Potions :");
         if (potions.size() == 0) {
             System.out.println("Aucune potion");
         } else {
