@@ -15,6 +15,7 @@ public class Main {
         Hero hero = new Hero(100, 10, 10, 10);
         Monstre monstre = new Monstre(100, 25, 10, 30, 1);
         Combat combat = new Combat(hero, monstre, inventaire.getArme(), inventaire.getPotions(), scanner);
+        CombatBoss combatBoss = new CombatBoss(hero, monstre, inventaire.getArme(), inventaire.getPotions(), scanner);
         // Placement du héros
         int x = rand.nextInt(carte.NB_LIGNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_LIGNES-2 (pour éviter le contour)
         int y = rand.nextInt(carte.NB_COLONNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_COLONNES-2 (pour éviter le contour)
@@ -53,10 +54,14 @@ public class Main {
                 case "droite":
                     nouveauY++;
                     break;
+                case "quitter":
+                    System.exit(0);
                 case "help":
-                    System.out.print("- Direction : haut,bas,gauche,droite\n");
+                    System.out.print("- Déplacement : haut,bas,gauche,droite\n");
                     System.out.print("- inventaire\n");
                     System.out.print("- ouvrir coffre (A coté d'un coffre 'C') \n");
+                    System.out.print("- Rentré dans un monstre pour lancé un combat\n");
+                    System.out.print("- Pour fermer le jeu : quitter\n");
                     break;
                 case "ouvrir coffre":
                     if ((x > 0 && map[x - 1][y] == 'C') || (x < carte.NB_LIGNES - 1 && map[x + 1][y] == 'C')
@@ -95,6 +100,26 @@ public class Main {
             if (((map[nouveauX][nouveauY] == 'C')
                     || (map[nouveauX][nouveauY] == '#'))) {
                 System.out.println("Déplacement impossible : case occupée.");
+                continue; // On passe au tour suivant de la boucle
+            }
+            int[] positionM = carte.findM(map);
+            if (positionM != null) {
+                int ligneM = positionM[0];
+                int colonneM = positionM[1];
+                map[ligneM][colonneM] = 'B';
+            }
+            if ((map[nouveauX][nouveauY] == 'B')) {
+                map[x][y] = '.';
+                x = nouveauX;
+                y = nouveauY;
+                map[x][y] = 'H';
+                combatBoss.start(inventaire);
+                for (int i = 0; i < map.length; i++) {
+                    for (int j = 0; j < map[i].length; j++) {
+                        System.out.print(map[i][j]);
+                    }
+                    System.out.println();
+                }
                 continue; // On passe au tour suivant de la boucle
             }
             if ((map[nouveauX][nouveauY] == 'M')) {

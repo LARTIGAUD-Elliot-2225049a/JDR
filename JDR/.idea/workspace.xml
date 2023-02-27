@@ -5,17 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6926007b-15ab-4392-9c2f-00ea74121869" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/CombatBoss.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/Hero.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Hero.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/Inventaire.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Inventaire.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Carte.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Carte.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/Combat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Combat.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JDR/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JDR/Monstre.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JDR/Monstre.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/MapGenerator$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/MapGenerator$RelationMarker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/MapGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/MapGeneratorTestPanel$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JDR/MapGeneratorTestPanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Carte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Carte.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Combat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Combat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Hero.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Hero.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Inventaire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Inventaire.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Monstre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Monstre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Potion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Potion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +56,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
       <recent name="vieux" />
       <recent name="Arme" />
       <recent name="Artefacts" />

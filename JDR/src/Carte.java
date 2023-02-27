@@ -3,9 +3,8 @@ public class Carte {
     private char[][] carte;
     public final int NB_LIGNES = 10;
     public final int NB_COLONNES = 20;
-    private final int NB_MONSTRES = 5;
-    private final int NB_COFFRES = 10;
-
+    private final int NB_MONSTRES = 7;
+    private final int NB_COFFRES = 4;
     public Carte() {
         carte = new char[NB_LIGNES][NB_COLONNES];
         Random rand = new Random();
@@ -19,7 +18,6 @@ public class Carte {
                 }
             }
         }
-
         for (int i = 0; i < NB_COFFRES; i++) {
             int x = rand.nextInt(NB_LIGNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_LIGNES-2 (pour éviter le contour)
             int y = rand.nextInt(NB_COLONNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_COLONNES-2 (pour éviter le contour)
@@ -67,7 +65,6 @@ public class Carte {
             coffresX[i] = x;
             coffresY[i] = y;
         }
-
         // Placement des monstres
         for (int i = 0; i < NB_MONSTRES; i++) {
             int x = rand.nextInt(NB_LIGNES - 2) + 1; // Génère une coordonnée aléatoire entre 1 et NB_LIGNES-2 (pour éviter le contour)
@@ -82,6 +79,27 @@ public class Carte {
     public char[][] getCarte() {
         return carte;
     }
+    public static int[] findM(char[][] map) {
+        int countM = 0;
+        int row = -1;
+        int col = -1;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] == 'M') {
+                    countM++;
+                    row = i;
+                    col = j;
+                }
+                if (countM > 1) {
+                    return null;
+                }
+            }
+        }
+        if (countM == 1) {
+            return new int[]{row, col};
+        } else {
+            return null;
+        }
+    }
 
 }
-

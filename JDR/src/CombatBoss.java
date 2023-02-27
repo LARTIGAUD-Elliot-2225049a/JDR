@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-public class Combat {
+public class CombatBoss {
     private ArrayList<Arme> armes;
     private ArrayList<Potion> potion;
     private Hero hero;
     private Monstre monstre;
     private Scanner scanner;
-    public Combat(Hero hero, Monstre monstre, ArrayList<Arme> armes, ArrayList<Potion> potions, Scanner scanner) {
+    public CombatBoss(Hero hero, Monstre monstre, ArrayList<Arme> armes, ArrayList<Potion> potions, Scanner scanner) {
         this.hero = hero;
         this.monstre = monstre;
         this.armes = armes;
@@ -14,8 +14,13 @@ public class Combat {
         this.scanner = new Scanner(System.in);
     }
     public void start(Inventaire inventaire) {
+        monstre.NivMonstre();
+        monstre.NivMonstre();
+        monstre.NivMonstre();
+        monstre.NivMonstre();
+        monstre.NivMonstre();
         if (armes.size() >= 2) {
-            System.out.println("Un combat débute contre un Monstre de niveaux "+ monstre.getNiv() +" !");
+            System.out.println("Un combat débute contre le Boss de niveaux "+ monstre.getNiv() +" !");
             // Demander au héros de choisir arme 1 ou arme 2
             System.out.println("Choisissez votre arme :");
             System.out.println("1. " + inventaire.getArme().get(0).getNom() + " - Attaque : " + inventaire.getArme().get(0).getAttaque() + " - Défense : " + inventaire.getArme().get(0).getDefense() + " - Vitesse : " + inventaire.getArme().get(0).getVitesse() + " - Rareté : " + inventaire.getArme().get(0).getRarete());
@@ -32,7 +37,7 @@ public class Combat {
                 if (hero.getVitesse() + armeChoisie.getVitesse() + inventaire.getVitesseArtefacts() >
                         monstre.getVitesse()) {
                     // Tour du héros
-                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vous :                   Boss niv "+monstre.getNiv());
                     System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
                     System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
                     System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
@@ -55,7 +60,7 @@ public class Combat {
                         // Tour du monstre
                         degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
                         degats = Math.max(degats, 0);
-                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        System.out.println("Le Boss vous inflige " + degats + " points de dégâts !");
                         hero.perdreVie(degats);
                         continue;
                     }
@@ -128,7 +133,7 @@ public class Combat {
                         }
                         int degats = monstre.getAttaque() - hero.getDefense();
                         degats = Math.max(degats, 0);
-                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        System.out.println("Le Boss vous inflige " + degats + " points de dégâts !");
                         hero.perdreVie(degats);
                         continue;
                     }
@@ -138,14 +143,14 @@ public class Combat {
                     // Tour du monstre
                     int degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
                     degats = Math.max(degats, 0);
-                    System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                    System.out.println("Le Boss vous inflige " + degats + " points de dégâts !");
                     hero.perdreVie(degats);
                     if (hero.getVie() <= 0) {
                         System.out.println("Vous avez perdu...");
                         System.exit(0);
                     }
                     // Tour du héros
-                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vous :                   Boss niv "+monstre.getNiv());
                     System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
                     System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
                     System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
@@ -232,13 +237,13 @@ public class Combat {
             }
         }
         else {
-            System.out.println("Un combat débute contre un Monstre de niveaux "+ monstre.getNiv() +" !");
+            System.out.println("Un combat débute contre le Boss de niveaux "+ monstre.getNiv() +" !");
             while (hero.getVie() > 0 && monstre.getVie() > 0) {
                 Arme armeChoisie = inventaire.getArme().get(0);
                 if (hero.getVitesse() + armeChoisie.getVitesse() + inventaire.getVitesseArtefacts() >
                         monstre.getVitesse()) {
                     // Tour du héros
-                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vous :                   Boss niv "+monstre.getNiv());
                     System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
                     System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
                     System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
@@ -260,7 +265,7 @@ public class Combat {
                         // Tour du monstre
                         degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
                         degats = Math.max(degats, 0);
-                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        System.out.println("Le Boss vous inflige " + degats + " points de dégâts !");
                         hero.perdreVie(degats);
                         continue;
                     } else if (choixAction == 2) {
@@ -332,7 +337,7 @@ public class Combat {
                         }
                         int degats = monstre.getAttaque() - hero.getDefense();
                         degats = Math.max(degats, 0);
-                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        System.out.println("Le Boss vous inflige " + degats + " points de dégâts !");
                         hero.perdreVie(degats);
                         continue;
                     }
@@ -340,14 +345,14 @@ public class Combat {
                     // Tour du monstre
                     int degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
                     degats = Math.max(degats, 0);
-                    System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                    System.out.println("Le Boss vous inflige " + degats + " points de dégâts !");
                     hero.perdreVie(degats);
                     if (hero.getVie() <= 0) {
                         System.out.println("Vous avez perdu...");
                         System.exit(0);
                     }
                     // Tour du héros
-                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vous :                   Boss niv "+monstre.getNiv());
                     System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
                     System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
                     System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
@@ -436,10 +441,8 @@ public class Combat {
         }
             // Fin de la partie
         if (hero.getVie() > 0) {
-                System.out.println("Vous avez vaincu le monstre !");
-                hero.gagnerExperience();
-                monstre.NivMonstre();
-                monstre.perdreVie(-100);
+                System.out.println("Vous avez vaincu le Boss !");
+                System.exit(0);
         } else {
                 System.out.println("Vous avez perdu...");
                 System.exit(0);
