@@ -94,8 +94,35 @@ public class Inventaire {
             System.out.println(potion.getNom() + " n'est pas dans l'inventaire !");
         }
     }
-
-
+    public int getVitesseArtefacts() {
+        int totalVitesse = 0;
+        for (Artefact artefact : artefacts) {
+            totalVitesse += artefact.getVitesse();
+        }
+        return totalVitesse;
+    }
+    public int getDefenseArtefacts() {
+        int totalDefense = 0;
+        for (Artefact artefact : artefacts) {
+            totalDefense += artefact.getDefense();
+        }
+        return totalDefense;
+    }
+    public int getAttaqueArtefacts() {
+        int totalAttaque = 0;
+        for (Artefact artefact : artefacts) {
+            totalAttaque += artefact.getAttaque();
+        }
+        return totalAttaque;
+    }
+    public void boirePotion (Potion potion, Hero hero) {
+        System.out.println("Vous avez bu une potion de " + potion.getNom() + " !");
+        hero.perdreVie(-potion.getVie());
+        hero.gagnerAttaque(potion.getAttaque());
+        hero.gagnerDefense(potion.getDefense());
+        hero.gagnerVitesse(potion.getVitesse());
+        System.out.println("Vie : " + hero.getVie());
+    }
     // Méthode pour afficher le contenu de l'inventaire
     public void afficherInventaire() {
         int n =1;
@@ -133,11 +160,12 @@ public class Inventaire {
         // Demander au joueur s'il veut jeter un objet
         Scanner scanner = new Scanner(System.in);
         System.out.println("Entrez le numéro de l'objet à jeter ou 0 pour fermer l'inventaire:");
+        System.out.print("Entrez une commande : ");
         int choix = scanner.nextInt();
         if (choix > 0) {
-            System.out.println("Confirmer la suppression de l'objet sélectionné (y/n) :");
+            System.out.println("Confirmer la suppression de l'objet sélectionné (oui/non) :");
+            System.out.print("Entrez une commande : ");
             String confirmation = scanner.next();
-
             if (confirmation.equalsIgnoreCase("y")) {
                 if (choix <= armes.size()) {
                     enleverArme(armes.get(choix - 1));

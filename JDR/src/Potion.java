@@ -38,5 +38,7 @@ public class Potion {
     public Rarete getRarete() {
         return rarete;
     }
+
+
 }
 

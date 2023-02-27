@@ -5,7 +5,7 @@ public class Monstre {
     private int vitesse;
     private int niveau;
 
-    public Monstre(int vie, int attaque, int defense, int vitesse) {
+    public Monstre(int vie, int attaque, int defense, int vitesse, int niveau) {
         this.vie = vie;
         this.attaque = attaque;
         this.defense = defense;
@@ -31,16 +31,16 @@ public class Monstre {
     public int getNiv() {
         return niveau;
     }
-    int niveauGagnee = 1;
-    public void gagnerExperience(int ennemiNiveau) {
-        niveau += niveauGagnee;
-        int niveauActuel = niveau / 100;
-        int niveauPrecedent = (niveau - niveauGagnee) / 100;
-        if (niveauActuel > niveauPrecedent) {
-            vie += 10;
-            attaque += 5;
-            defense += 5;
-            vitesse += 2;
+
+    public void perdreVie(int degats) {
+        vie -= degats;
+    }
+
+    public void NivMonstre() {
+        niveau += 1;
+        vie += 10;
+        attaque += 5;
+        defense += 5;
+        vitesse += 2;
         }
     }
-}

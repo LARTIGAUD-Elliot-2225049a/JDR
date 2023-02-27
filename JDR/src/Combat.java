@@ -1,256 +1,452 @@
-/*
-import java.util.Random;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Combat {
+    private ArrayList<Arme> armes;
+    private ArrayList<Potion> potion;
     private Hero hero;
     private Monstre monstre;
-    private boolean tourHero;
-    public Combat(Hero hero, Monstre monstre) {
+    private Scanner scanner;
+
+    public Combat(Hero hero, Monstre monstre, ArrayList<Arme> armes, ArrayList<Potion> potions, Scanner scanner) {
         this.hero = hero;
         this.monstre = monstre;
-        this.tourHero = true;
+        this.armes = armes;
+        this.potion = potions;
+        this.scanner = new Scanner(System.in);
     }
-    public void lancer() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Un combat débute !");
-        while (hero.getVie() > 0 && monstre.getVie() > 0) {
-            System.out.println("-------------------------------------------");
-            if (tourHero) {
-                System.out.println("Tour du héros !");
-                System.out.println("Vie du héros : " + hero.getVie());
-                System.out.println("Vie du monstre : " + monstre.getVie());
-                System.out.println("Que voulez-vous faire ?");
-                System.out.println("1 - Attaquer avec votre main");
-                System.out.println("2 - Attaquer avec " + (hero.getArme().size() > 0 ? "votre arme 1" : "aucune arme"));
-                System.out.println("3 - Attaquer avec " + (hero.getArme().size() > 1 ? "votre arme 2" : "aucune arme"));
-                System.out.println("4 - Utiliser une potion");
-                int choix = scanner.nextInt();
-                switch (choix) {
-                    case 1:
-                        attaquer(hero.getAttaque(), 0);
-                        break;
-                    case 2:
-                        if (hero.getArme().size() > 0) {
-                            attaquer(hero.getArme().get(0).getAttaque(), hero.getArme().get(0).getRarete());
-                        } else {
-                            System.out.println("Vous n'avez pas d'arme !");
+
+    public void start(Inventaire inventaire) {
+        if (armes.size() >= 2) {
+            System.out.println("Un combat débute contre un Monstre de niveaux "+ monstre.getNiv() +" !");
+            // Demander au héros de choisir arme 1 ou arme 2
+            System.out.println("Choisissez votre arme :");
+            System.out.println("1. " + inventaire.getArme().get(0).getNom() + " - Attaque : " + inventaire.getArme().get(0).getAttaque() + " - Défense : " + inventaire.getArme().get(0).getDefense() + " - Vitesse : " + inventaire.getArme().get(0).getVitesse() + " - Rareté : " + inventaire.getArme().get(0).getRarete());
+            System.out.println("2. " + inventaire.getArme().get(1).getNom() + " - Attaque : " + inventaire.getArme().get(1).getAttaque() + " - Défense : " + inventaire.getArme().get(1).getDefense() + " - Vitesse : " + inventaire.getArme().get(1).getVitesse() + " - Rareté : " + inventaire.getArme().get(1).getRarete());
+
+            System.out.print("Entrez une commande : ");
+            int choixArme = scanner.nextInt();
+            Arme armeChoisie = inventaire.getArme().get(choixArme - 1);
+            System.out.println("Vous avez choisi l'arme " + armeChoisie.getNom() + " - Attaque : " + armeChoisie.getAttaque() + " - Défense : " + armeChoisie.getDefense() + " - Vitesse : " + armeChoisie.getVitesse() + " - Rareté : " + armeChoisie.getRarete());
+            // Boucle de combat
+            while (hero.getVie() > 0 || monstre.getVie() > 0) {
+                // Détermine qui joue en premier
+
+                if (hero.getVitesse() + armeChoisie.getVitesse() + inventaire.getVitesseArtefacts() >
+                        monstre.getVitesse()) {
+                    // Tour du héros
+                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
+                    System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
+                    System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
+                    System.out.println("Vitesse :"+ (hero.getVitesse()+armeChoisie.getVitesse()+inventaire.getVitesseArtefacts())+"              Vitesse :"+monstre.getVitesse());
+                    System.out.println("À vous de jouer !");
+                    System.out.println("1. Attaquer");
+                    System.out.println("2. Utiliser une potion");
+                    System.out.print("Entrez une commande : ");
+                    int choixAction = scanner.nextInt();
+                    if (choixAction == 1) {
+                        int degats = hero.getAttaque() + armeChoisie.getAttaque() +
+                                inventaire.getAttaqueArtefacts() - monstre.getDefense();
+                        degats = Math.max(degats, 0);
+                        System.out.println("Vous infligez " + degats + " points de dégâts !");
+                        monstre.perdreVie(degats);
+
+                        if (monstre.getVie() <= 0) {
+                            continue;
                         }
-                        break;
-                    case 3:
-                        if (hero.getArme().size() > 1) {
-                            attaquer(hero.getArme().get(1).getAttaque(), hero.getArme().get(1).getRarete());
-                        } else {
-                            System.out.println("Vous n'avez pas d'autre arme !");
+                        // Tour du monstre
+                        degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
+                        degats = Math.max(degats, 0);
+                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        hero.perdreVie(degats);
+                        continue;
+                    }
+                    else if (choixAction == 2) {
+                        if (potion.size() <= 0) {
+                            System.out.println("Aucune Potion dans votre inventaire");
+                            continue;
                         }
-                        break;
-                    case 4:
-                        utiliserPotion();
-                        break;
-                    default:
-                        System.out.println("Choix invalide !");
-                        break;
+
+                        if (potion.size() == 1) {
+                            inventaire.getPotions();
+                            Potion PotionChoisie = inventaire.getPotions().get(0);
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            inventaire.boirePotion(potion.get(0), hero);
+                            inventaire.enleverPotion(potion.get(0));
+                        }
+                        if (potion.size() == 2) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 3) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 4) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 5) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.println("5. " + inventaire.getPotions().get(4).getNom() + " - Attaque : " + inventaire.getPotions().get(4).getAttaque() + " - Défense : " + inventaire.getPotions().get(4).getDefense() + " - Vitesse : " + inventaire.getPotions().get(4).getVitesse() + " - Vie: " + inventaire.getPotions().get(4).getVie() + " - Rareté : " + inventaire.getPotions().get(4).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        int degats = monstre.getAttaque() - hero.getDefense();
+                        degats = Math.max(degats, 0);
+                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        hero.perdreVie(degats);
+                        continue;
+                    }
+
                 }
-            } else {
-                System.out.println("Tour du monstre !");
-                int degats = calculerDegats(monstre.getAttaque(), hero.getDefense());
-                System.out.println("Le monstre inflige " + degats + " points de dégâts !");
-                hero.setVie(hero.getVie() - degats);
+                else {
+                    // Tour du monstre
+                    int degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
+                    degats = Math.max(degats, 0);
+                    System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                    hero.perdreVie(degats);
+                    if (hero.getVie() <= 0) {
+                        continue;
+                    }
+                    // Tour du héros
+                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
+                    System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
+                    System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
+                    System.out.println("Vitesse :"+ (hero.getVitesse()+armeChoisie.getVitesse()+inventaire.getVitesseArtefacts())+"              Vitesse :"+monstre.getVitesse());
+                    System.out.println("1. Attaquer");
+                    System.out.println("2. Utiliser une potion");
+                    System.out.print("Entrez une commande : ");
+                    int choixAction = scanner.nextInt();
+                    if (choixAction == 1) {
+                        degats = hero.getAttaque() + armeChoisie.getAttaque() + inventaire.getAttaqueArtefacts() - monstre.getDefense();
+                        degats = Math.max(degats, 0);
+                        System.out.println("Vous infligez " + degats + " points de dégâts !");
+                        monstre.perdreVie(degats);
+
+                    } else if (choixAction == 2) {
+                        if (potion.size() <= 0) {
+                            System.out.println("Aucune Potion dans votre inventaire");
+                            continue;
+                        }
+
+                        if (potion.size() == 1) {
+                            inventaire.getPotions();
+                            Potion PotionChoisie = inventaire.getPotions().get(0);
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            inventaire.boirePotion(potion.get(0), hero);
+                            inventaire.enleverPotion(potion.get(0));
+                        }
+                        if (potion.size() == 2) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 3) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 4) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 5) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.println("5. " + inventaire.getPotions().get(4).getNom() + " - Attaque : " + inventaire.getPotions().get(4).getAttaque() + " - Défense : " + inventaire.getPotions().get(4).getDefense() + " - Vitesse : " + inventaire.getPotions().get(4).getVitesse() + " - Vie: " + inventaire.getPotions().get(4).getVie() + " - Rareté : " + inventaire.getPotions().get(4).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                    }
+                }
             }
-            tourHero = !tourHero;
         }
-        if (hero.getVie() <= 0) {
-            System.out.println("Le héros a été vaincu !");
-        } else {
-            System.out.println("Le monstre a été vaincu !");
-            int ennemiNiveau = monstre.getNiveau();
-            hero.gagnerExperience(ennemiNiveau);
-        }
-    }
+        else {
+            System.out.println("Un combat débute contre un Monstre de niveaux "+ monstre.getNiv() +" !");
+            while (hero.getVie() > 0 && monstre.getVie() > 0) {
+                Arme armeChoisie = inventaire.getArme().get(0);
+                if (hero.getVitesse() + armeChoisie.getVitesse() + inventaire.getVitesseArtefacts() >
+                        monstre.getVitesse()) {
+                    // Tour du héros
+                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
+                    System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
+                    System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
+                    System.out.println("Vitesse :"+ (hero.getVitesse()+armeChoisie.getVitesse()+inventaire.getVitesseArtefacts())+"              Vitesse :"+monstre.getVitesse());
+                    System.out.println("1. Attaquer");
+                    System.out.println("2. Utiliser une potion");
+                    System.out.print("Entrez une commande : ");
+                    int choixAction = scanner.nextInt();
+                    if (choixAction == 1) {
+                        int degats = hero.getAttaque() + armeChoisie.getAttaque() +
+                                inventaire.getAttaqueArtefacts() - monstre.getDefense();
+                        degats = Math.max(degats, 0);
+                        System.out.println("Vous infligez " + degats + " points de dégâts !");
+                        monstre.perdreVie(degats);
 
-    private void attaquer(int attaque, int rarete) {
-        Random random = new Random();
-        int degats = calculerDegats(attaque, monstre.getDefense());
-        if (rarete > 0) {
-            int crit = random.nextInt(100);
-            if (crit < rarete) {
-                degats *= 2;
-                System.out.println("Coup critique !");
-            }
-        }
-        System.out.println("Vous infligez " + degats + " points de dégâts !");
-        monstre.setVie(monstre.getVie() - degats);
-    }
+                        if (monstre.getVie() <= 0) {
+                            continue;
+                        }
+                        // Tour du monstre
+                        degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
+                        degats = Math.max(degats, 0);
+                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        hero.perdreVie(degats);
+                        continue;
+                    } else if (choixAction == 2) {
+                        if (potion.size() <= 0) {
+                            System.out.println("Aucune Potion dans votre inventaire");
+                            continue;
+                        }
 
-    private void utiliserPotion() {
-        if (hero.getPotions() > 0) {
-            hero.setVie(hero.getVie() + 50);
-            hero.setPotions(hero.getPotions() - 1);
-            System.out.println("Vous utilisez une potion et récupérez 50 points de vie !");
-        } else {
-            System.out.println("Vous n'avez plus de potions !");
-        }
-    }
-
-    private int calculerDegats(int attaque, int defense) {
-        Random random = new Random();
-        int degats = attaque - defense;
-        if (degats < 0) {
-            degats = 0;
-        }
-        degats += random.nextInt(11) - 5;
-        return degats;
-    }
-
-}
-
- *//*
-import java.util.Random;
-
-public class Combat {
-    private Hero hero;
-    private Monstre monstre;
-    private boolean tourDuHero;
-    private boolean combatTermine;
-    private Random rand;
-
-    public Combat(Hero hero, Monstre monstre) {
-        this.hero = hero;
-        this.monstre = monstre;
-        this.tourDuHero = true;
-        this.combatTermine = false;
-        this.rand = new Random();
-    }
-
-    Inventaire inventaire = new Inventaire();
-
-    public void tour() {
-        if (combatTermine) {
-            return;
-        }
-
-        if (tourDuHero) {
-            tourDuHero();
-        } else {
-            tourDuMonstre();
-        }
-
-        if (hero.getVie() <= 0 || monstre.getVie() <= 0) {
-            combatTermine = true;
-            finDuCombat();
-        } else {
-            tourDuHero = !tourDuHero;
-        }
-    }
-
-    private void tourDuHero() {
-        System.out.println("C'est au tour du héros.");
-
-        // Afficher les options de l'utilisateur
-        System.out.println("Que voulez-vous faire ?");
-        System.out.println("1. Attaquer avec la main");
-        int choixArme1 = -1;
-        int choixArme2 = -1;
-        if (hero.getArmes().size() >= 1) {
-            System.out.println("2. Attaquer avec l'arme 1 : " + hero.getArmes().get(0).getNom());
-            choixArme1 = 2;
-        }
-        if (hero.getArmes().size() >= 2) {
-            System.out.println("3. Attaquer avec l'arme 2 : " + hero.getArmes().get(1).getNom());
-            choixArme2 = 3;
-        }
-        System.out.println("4. Utiliser une potion");
-        System.out.print("Votre choix : ");
-
-        // Lire l'entrée de l'utilisateur
-        int choix = LireEntier();
-
-        // Valider l'entrée de l'utilisateur et effectuer l'action appropriée
-        switch (choix) {
-            case 1:
-                attaquer(hero, monstre, hero.getAttaque());
-                break;
-            case 2:
-                if (choixArme1 != -1) {
-                    attaquer(hero, monstre, hero.getArmes().get(0).getAttaque());
+                        if (potion.size() == 1) {
+                            inventaire.getPotions();
+                            Potion PotionChoisie = inventaire.getPotions().get(0);
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            inventaire.boirePotion(potion.get(0), hero);
+                            inventaire.enleverPotion(potion.get(0));
+                        }
+                        if (potion.size() == 2) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 3) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 4) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 5) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.println("5. " + inventaire.getPotions().get(4).getNom() + " - Attaque : " + inventaire.getPotions().get(4).getAttaque() + " - Défense : " + inventaire.getPotions().get(4).getDefense() + " - Vitesse : " + inventaire.getPotions().get(4).getVitesse() + " - Vie: " + inventaire.getPotions().get(4).getVie() + " - Rareté : " + inventaire.getPotions().get(4).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        int degats = monstre.getAttaque() - hero.getDefense();
+                        degats = Math.max(degats, 0);
+                        System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                        hero.perdreVie(degats);
+                        continue;
+                    }
                 } else {
-                    System.out.println("Option invalide.");
-                }
-                break;
-            case 3:
-                if (choixArme2 != -1) {
-                    attaquer(hero, monstre, hero.getArmes().get(1).getAttaque());
-                } else {
-                    System.out.println("Option invalide.");
-                }
-                break;
-            case 4:
-                utiliserPotion(hero);
-                break;
-            default:
-                System.out.println("Option invalide.");
-                break;
-        }
-    }
+                    // Tour du monstre
+                    int degats = monstre.getAttaque() - (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts());
+                    degats = Math.max(degats, 0);
+                    System.out.println("Le monstre vous inflige " + degats + " points de dégâts !");
+                    hero.perdreVie(degats);
+                    if (hero.getVie() <= 0) {
+                        continue;
+                    }
+                    // Tour du héros
+                    System.out.println("Vous :                   Monstre niv "+monstre.getNiv());
+                    System.out.println("Vie :"+ hero.getVie()+"                  Vie :"+ monstre.getVie());
+                    System.out.println("Attaque :"+ (hero.getAttaque()+armeChoisie.getAttaque()+inventaire.getAttaqueArtefacts())+"              Attaque :"+monstre.getAttaque());
+                    System.out.println("Defense :"+ (hero.getDefense()+armeChoisie.getDefense()+inventaire.getDefenseArtefacts())+"              Defense :"+monstre.getDefense());
+                    System.out.println("Vitesse :"+ (hero.getVitesse()+armeChoisie.getVitesse()+inventaire.getVitesseArtefacts())+"              Vitesse :"+monstre.getVitesse());
+                    System.out.println("1. Attaquer");
+                    System.out.println("2. Utiliser une potion");
+                    System.out.print("Entrez une commande : ");
+                    int choixAction = scanner.nextInt();
+                    if (choixAction == 1) {
+                        degats = hero.getAttaque() + armeChoisie.getAttaque() + inventaire.getAttaqueArtefacts() - monstre.getDefense();
+                        degats = Math.max(degats, 0);
+                        System.out.println("Vous infligez " + degats + " points de dégâts !");
+                        monstre.perdreVie(degats);
 
-    private void tourDuMonstre() {
-        System.out.println("C'est au tour du monstre.");
+                    } else if (choixAction == 2) {
+                        if (potion.size() <= 0) {
+                            System.out.println("Aucune Potion dans votre inventaire");
+                            continue;
+                        }
 
-        // Le monstre choisit une attaque aléatoire
-        int choixAttaque = rand.nextInt(2);
-        if (choixAttaque == 0) {
-            attaquer(monstre, hero, monstre.getAttaque());
-        } else {
-            // Le monstre utilise une compétence spéciale s'il en a une
-            if (monstre.getCompetenceSpeciale() != null) {
-                System.out.println("Le monstre utilise " + monstre.getCompetenceSpeciale().getNom() + " !");
-                monstre.getCompetenceSpeciale().effet(hero);
-            } else {
-                attaquer(monstre, hero, monstre.getAttaque());
+                        if (potion.size() == 1) {
+                            inventaire.getPotions();
+                            Potion PotionChoisie = inventaire.getPotions().get(0);
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            inventaire.boirePotion(potion.get(0), hero);
+                            inventaire.enleverPotion(potion.get(0));
+                        }
+                        if (potion.size() == 2) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 3) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 4) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+                        if (potion.size() == 5) {
+                            inventaire.getPotions();
+                            System.out.println("Choisissez votre Potion :");
+                            System.out.println("1. " + inventaire.getPotions().get(0).getNom() + " - Attaque : " + inventaire.getPotions().get(0).getAttaque() + " - Défense : " + inventaire.getPotions().get(0).getDefense() + " - Vitesse : " + inventaire.getPotions().get(0).getVitesse() + " - Vie: " + inventaire.getPotions().get(0).getVie() + " - Rareté : " + inventaire.getPotions().get(0).getRarete());
+                            System.out.println("2. " + inventaire.getPotions().get(1).getNom() + " - Attaque : " + inventaire.getPotions().get(1).getAttaque() + " - Défense : " + inventaire.getPotions().get(1).getDefense() + " - Vitesse : " + inventaire.getPotions().get(1).getVitesse() + " - Vie: " + inventaire.getPotions().get(1).getVie() + " - Rareté : " + inventaire.getPotions().get(1).getRarete());
+                            System.out.println("3. " + inventaire.getPotions().get(2).getNom() + " - Attaque : " + inventaire.getPotions().get(2).getAttaque() + " - Défense : " + inventaire.getPotions().get(2).getDefense() + " - Vitesse : " + inventaire.getPotions().get(2).getVitesse() + " - Vie: " + inventaire.getPotions().get(2).getVie() + " - Rareté : " + inventaire.getPotions().get(2).getRarete());
+                            System.out.println("4. " + inventaire.getPotions().get(3).getNom() + " - Attaque : " + inventaire.getPotions().get(3).getAttaque() + " - Défense : " + inventaire.getPotions().get(3).getDefense() + " - Vitesse : " + inventaire.getPotions().get(3).getVitesse() + " - Vie: " + inventaire.getPotions().get(3).getVie() + " - Rareté : " + inventaire.getPotions().get(3).getRarete());
+                            System.out.println("5. " + inventaire.getPotions().get(4).getNom() + " - Attaque : " + inventaire.getPotions().get(4).getAttaque() + " - Défense : " + inventaire.getPotions().get(4).getDefense() + " - Vitesse : " + inventaire.getPotions().get(4).getVitesse() + " - Vie: " + inventaire.getPotions().get(4).getVie() + " - Rareté : " + inventaire.getPotions().get(4).getRarete());
+                            System.out.print("Entrez une commande : ");
+                            int choixPotion = scanner.nextInt();
+                            Potion PotionChoisie = inventaire.getPotions().get(choixPotion - 1);
+                            System.out.println("Vous avez choisi la " + PotionChoisie.getNom() + " - Attaque : " + PotionChoisie.getAttaque() + " - Défense : " + PotionChoisie.getDefense() + " - Vitesse : " + PotionChoisie.getVitesse() + " - Rareté : " + PotionChoisie.getRarete());
+                            inventaire.boirePotion(potion.get(choixPotion - 1), hero);
+                            inventaire.enleverPotion(potion.get(choixPotion - 1));
+                        }
+
+                    }
+                }
             }
         }
-    }
-
-    private void attaquer(Personnage attaquant, Personnage defenseur, int attaque) {
-        int degats = attaquant.calculerDegats(attaque);
-        System.out.println(attaquant.getNom() + " attaque " + defenseur.getNom() + " et lui inflige " + degats + " points de dégâts.");
-        defenseur.recevoirDegats(degats);
-    }
-
-    private void utiliserPotion(Hero hero) {
-        if (hero.getPotions() <= 0) {
-            System.out.println("Vous n'avez plus de potions.");
-            return;
+            // Fin de la partie
+        if (hero.getVie() > 0) {
+                System.out.println("Vous avez vaincu le monstre !");
+                hero.gagnerExperience();
+                monstre.NivMonstre();
+                monstre.perdreVie(-100);
+        } else {
+                System.out.println("Vous avez perdu...");
+                System.exit(0);
         }
-
-        int soins = rand.nextInt(20) + 10;
-        System.out.println("Vous utilisez une potion et récupérez " + soins + " points de vie.");
-        hero.recevoirSoins(soins);
-        hero.retirerPotion();
-    }
-
-    private void finDuCombat() {
-        if (hero.getVie() <= 0) {
-            System.out.println("Vous êtes mort.");
-        } else if (monstre.getVie() <= 0) {
-            System.out.println("Vous avez vaincu le monstre !");
-            int xpGagnee = monstre.getXp();
-            System.out.println("Vous gagnez " + xpGagnee + " points d'expérience.");
-            hero.gagnerXp(xpGagnee);
         }
     }
 
-    private int LireEntier() {
-        // Cette méthode permet de lire l'entrée de l'utilisateur et de s'assurer qu'il s'agit bien d'un entier.
-        // Elle n'est pas incluse dans la question, mais elle est nécessaire pour que le code compile.
 
-        Scanner scanner = new Scanner(System.in);
-        while (!scanner.hasNextInt()) {
-            System.out.print("Entrée invalide, veuillez entrer un nombre : ");
-            scanner.nextLine();
-        }
-        int entier = scanner.nextInt();
-        scanner.nextLine(); // vider la ligne
-        return entier;
-    }
-}*/
+
