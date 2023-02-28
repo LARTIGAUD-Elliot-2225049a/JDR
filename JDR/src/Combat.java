@@ -233,7 +233,7 @@ public class Combat {
         }
         else {
             System.out.println("Un combat débute contre un Monstre de niveaux "+ monstre.getNiv() +" !");
-            while (hero.getVie() > 0 && monstre.getVie() > 0) {
+            while (hero.getVie() > 0 || monstre.getVie() > 0) {
                 Arme armeChoisie = inventaire.getArme().get(0);
                 if (hero.getVitesse() + armeChoisie.getVitesse() + inventaire.getVitesseArtefacts() >
                         monstre.getVitesse()) {
